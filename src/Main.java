@@ -1,111 +1,62 @@
-/**
- * ================================================================
- * MAIN CLASS - UseCase2RoomInitialization
- * ================================================================
- *
- * Use Case 2: Basic Room Types & Static Availability
- *
- * Description:
- * This class demonstrates basic domain modeling
- * for the Hotel Booking Management System.
- *
- * At this stage, the application:
- * - Defines an abstract Room class
- * - Creates concrete room types (Single, Double, Suite)
- * - Stores static availability using simple variables
- * - Prints room details and availability to the console
- *
- * This use case introduces inheritance, abstraction,
- * and encapsulation before data structures are added.
- *
- * @author Developer
- * @version 2.0
- */
-abstract class Room {
-    protected String name;
-    protected int beds;
-    protected double price;
-    protected int sizeSqFt;
+import java.util.HashMap;
+import java.util.Map;
 
-    public Room(String name, int beds, double price, int sizeSqFt) {
-        this.name = name;
-        this.beds = beds;
-        this.price = price;
-        this.sizeSqFt = sizeSqFt;
+class RoomInventory {
+    private Map<String, RoomDetails> inventory;
+
+    public RoomInventory() {
+        inventory = new HashMap<>();
     }
 
-    public abstract void displayDetails();
-}
-
-// Concrete room types
-class SingleRoom extends Room {
-    public SingleRoom() {
-        super("Single Room", 1, 2000.0, 250);
+    // Register room type with details
+    public void addRoomType(String roomType, int beds, int sizeSqFt, double price, int availableCount) {
+        inventory.put(roomType, new RoomDetails(beds, sizeSqFt, price, availableCount));
     }
 
-    @Override
-    public void displayDetails() {
-        System.out.println(name + ":");
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: "+sizeSqFt+" sqft");
-        System.out.println("Price per night: " + price);
-    }
-}
-
-class DoubleRoom extends Room {
-    public DoubleRoom() {
-        super("Double Room", 2, 3500.0, 400);
-    }
-
-    @Override
-    public void displayDetails() {
-        System.out.println(name + ":");
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: "+sizeSqFt+" sqft");
-        System.out.println("Price per night: " + price);
-    }
-}
-
-class SuiteRoom extends Room {
-    public SuiteRoom() {
-        super("Suite Room", 3, 6000.0, 700);
+    // Display current inventory in structured format
+    public void displayInventory() {
+        System.out.println("Hotel Room Inventory Status\n");
+        for (Map.Entry<String, RoomDetails> entry : inventory.entrySet()) {
+            String roomType = entry.getKey();
+            RoomDetails details = entry.getValue();
+            System.out.println(roomType + ":");
+            System.out.println("Beds: " + details.beds);
+            System.out.println("Size: " + details.sizeSqFt + " sqft");
+            System.out.println("Price per night: " + details.price);
+            System.out.println("Available Rooms: " + details.availableCount);
+            System.out.println();
+        }
     }
 
-    @Override
-    public void displayDetails() {
-        System.out.println(name + ":");
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: "+sizeSqFt+" sqft");
-        System.out.println("Price per night: " + price);
+    // Inner class to hold room details
+    private static class RoomDetails {
+        int beds;
+        int sizeSqFt;
+        double price;
+        int availableCount;
+
+        RoomDetails(int beds, int sizeSqFt, double price, int availableCount) {
+            this.beds = beds;
+            this.sizeSqFt = sizeSqFt;
+            this.price = price;
+            this.availableCount = availableCount;
+        }
     }
 }
 
 public class Main {
 
     public static void main(String[] args) {
-        // Initialize room objects
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        // Initialize inventory
+        RoomInventory inventory = new RoomInventory();
 
-        // Static availability (simple variables)
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        // Register room types with details
+        inventory.addRoomType("Single Room", 1, 250, 1500.0, 5);
+        inventory.addRoomType("Double Room", 2, 400, 2500.0, 3);
+        inventory.addRoomType("Suite Room", 3, 750, 5000.0, 2);
 
-        // Display details
-        System.out.println("Hotel Room Initialization");
-        System.out.println("");
-        single.displayDetails();
-        System.out.println("Available: " + singleAvailable);
-        System.out.println("");
+        // Display inventory state
+        inventory.displayInventory();
 
-        doubleRoom.displayDetails();
-        System.out.println("Available: " + doubleAvailable);
-        System.out.println("");
-
-        suite.displayDetails();
-        System.out.println("Available: " + suiteAvailable);
-        System.out.println("");
     }
 }
