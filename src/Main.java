@@ -13,18 +13,19 @@ class RoomInventory {
         inventory.put(roomType, new RoomDetails(beds, sizeSqFt, price, availableCount));
     }
 
-    // Display current inventory in structured format
-    public void displayInventory() {
-        System.out.println("Hotel Room Inventory Status\n");
-        for (Map.Entry<String, RoomDetails> entry : inventory.entrySet()) {
-            String roomType = entry.getKey();
-            RoomDetails details = entry.getValue();
+    // Search and display room details
+    public void searchRoom(String roomType) {
+        RoomDetails details = inventory.get(roomType);
+        if (details != null) {
+            System.out.println("Hotel Room Inventory Status\n");
             System.out.println(roomType + ":");
             System.out.println("Beds: " + details.beds);
             System.out.println("Size: " + details.sizeSqFt + " sqft");
             System.out.println("Price per night: " + details.price);
             System.out.println("Available Rooms: " + details.availableCount);
             System.out.println();
+        } else {
+            System.out.println("Room type '" + roomType + "' not found in inventory.");
         }
     }
 
@@ -55,8 +56,9 @@ public class Main {
         inventory.addRoomType("Double Room", 2, 400, 2500.0, 3);
         inventory.addRoomType("Suite Room", 3, 750, 5000.0, 2);
 
-        // Display inventory state
-        inventory.displayInventory();
-
+        // Demo search (hardcoded for UC4)
+        inventory.searchRoom("Single Room");
+        inventory.searchRoom("Double Room");
+        inventory.searchRoom("Suite Room");
     }
 }
